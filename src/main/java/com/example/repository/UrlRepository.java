@@ -18,4 +18,6 @@ import java.util.Optional;
 public interface UrlRepository extends BaseRepository<UrlEntity,Integer>, JpaSpecificationExecutor<UrlEntity> {
     @NonNull
     Optional<UrlEntity> findByMd5(@NonNull String md5);
+    @NonNull
+    Optional<UrlEntity> findByUrl(@NonNull String url);
 }

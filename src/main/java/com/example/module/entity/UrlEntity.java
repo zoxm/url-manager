@@ -15,8 +15,11 @@ public class UrlEntity extends BaseEntity implements Serializable {
 
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "url_id", columnDefinition = "varchar(225) not null COMMENT 'url_id'")
+    private String urlId;
 
     @Column(name = "type", columnDefinition = "varchar(225) not null COMMENT 'type'")
     private String type;

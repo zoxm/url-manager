@@ -1,6 +1,8 @@
 package com.example.service;
 
+import com.example.module.entity.IndustryEntity;
 import org.jsoup.nodes.Document;
+
 
 /**
  * @ClassName HuodongjiaUrlParserService
@@ -11,5 +13,6 @@ import org.jsoup.nodes.Document;
  **/
 
 public interface HuodongjiaUrlParserService {
-    void parser(Document document);
+    String parser(IndustryEntity industryEntity);
+    void parserAllIndustry(Document document);
 }
