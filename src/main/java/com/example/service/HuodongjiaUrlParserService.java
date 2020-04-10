@@ -14,5 +14,6 @@ import org.jsoup.nodes.Document;
 
 public interface HuodongjiaUrlParserService {
     String parser(IndustryEntity industryEntity);
+    String parserFlush(IndustryEntity industryEntity);
     void parserAllIndustry(Document document);
 }

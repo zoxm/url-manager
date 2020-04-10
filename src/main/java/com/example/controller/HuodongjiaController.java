@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -93,17 +94,43 @@ public class HuodongjiaController {
     @RequestMapping("plan1")
     public String planX() {
         List<IndustryEntity> industryEntityList = industryEntityService.findAll();
+        int errnoCount = 0;
 
-        while (true){
+        try {
             for (IndustryEntity industryEntity : industryEntityList) {
-                if (industryEntity.getDone() >= industryEntity.getMaxPage()){
-                    StaticLog.info("已经是最大页码:  {}page-{}  ", industryEntity.getHref(),industryEntity.getMaxPage());
+                if (industryEntity.getDone() >= industryEntity.getMaxPage()) {
+                    StaticLog.info("已经是最大页码:  {}page-{}  ", industryEntity.getHref(), industryEntity.getMaxPage());
                     continue;
                 }
                 huodongjiaUrlParserService.parser(industryEntity);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            errnoCount++;
+            StaticLog.info("ERRNO:  报{}个错啦", errnoCount);
+            StaticLog.info("ERRNO:  {}", e.toString());
         }
-//        return "ok";
+
+
+        return "ok";
+    }
+
+    @RequestMapping("plan2")
+    public String planZ() {
+        List<IndustryEntity> industryEntityList = industryEntityService.findAll();
+        int errnoCount = 0;
+        try {
+            for (IndustryEntity industryEntity : industryEntityList) {
+                huodongjiaUrlParserService.parserFlush(industryEntity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            errnoCount++;
+            StaticLog.info("ERRNO:  报{}个错啦", errnoCount);
+            StaticLog.info("ERRNO:  {}", e.toString());
+        }
+
+        return "ok";
     }
 
 }

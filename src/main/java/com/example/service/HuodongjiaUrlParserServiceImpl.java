@@ -72,6 +72,43 @@ public class HuodongjiaUrlParserServiceImpl implements HuodongjiaUrlParserServic
     }
 
 
+    @Override
+    public String parserFlush(IndustryEntity industryEntity) {
+       for (int doPage=1; doPage <= 10; ++ doPage){
+           Document document = documentService.getDocument(industryEntity.getHref() + "page-"+ doPage +"/");
+           Elements elements = document.getElementsByClass("into");
+//           StaticLog.info("开始采集url:  {}page-{}/",industryEntity.getHref(), doPage);
+//        StaticLog.info("document:  {}",document);
+           elements.forEach(element -> {
+               Elements hrefs = element.getElementsByAttribute("href");
+               Element element1 = hrefs.get(0);
+               Elements all = element1.getElementsByTag("a");
+               all.forEach(e -> {
+                   urlEntityService.save("https://www.huodongjia.com", e.attr("abs:href"));
+                   StaticLog.info("增量刷新 save:  {}  ", e.attr("abs:href"));
+               });
+           });
+           // 记录这一页
+//           industryEntity.setDone(doPage);
+
+           // 下一页判断
+           AtomicInteger nextPage = new AtomicInteger();
+           Elements paginationElements = document.getElementsByClass("pagination");
+           paginationElements.forEach(element -> {
+               Elements elementElementsByTags = element.getElementsByTag("a");
+               if (!"下一页".equals(elementElementsByTags.last().text())){
+                   StaticLog.info("已经到最大页码:  {}  ", elementElementsByTags.last().text());
+                   //
+                   // 修改最大页码
+//                   industryEntity.setMaxPage(Integer.valueOf(elementElementsByTags.last().text()));
+                   nextPage.set(1);
+               }
+           });
+//           industryEntityService.update(industryEntity);
+
+       }
+        return "next_page";
+    }
 
     @Override
     public void parserAllIndustry(Document document) {

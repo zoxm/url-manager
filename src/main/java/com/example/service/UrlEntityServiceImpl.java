@@ -25,7 +25,7 @@ public class UrlEntityServiceImpl implements UrlEntityService {
     private UrlRepository urlRepository;
     @Override
     public void save(String type,String url) {
-//        String md5 = DigestUtils.md5DigestAsHex(url.getBytes());
+        String md5 = DigestUtils.md5DigestAsHex(url.getBytes());
         // 查重
         Optional<UrlEntity> byUrl1 = urlRepository.findByUrl(url);
         if (byUrl1.isPresent()){
@@ -41,7 +41,7 @@ public class UrlEntityServiceImpl implements UrlEntityService {
         UrlEntity object = new UrlEntity();
         object
                 .setUrlId(UUID.randomUUID().toString())
-//                .setMd5(md5)
+                .setMd5(md5)
                 .setType(type)
                 .setTitle("")
                 .setFlag("no")
